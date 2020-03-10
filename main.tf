@@ -3,7 +3,7 @@ data "aws_region" "current" {}
 data "template_file" "kubeconfig" {
   template = "${file("${path.module}/templates/kubeconfig.tpl")}"
 
-  vars {
+  vars = {
     kubeconfig_name                   = "${local.kubeconfig_name}"
     endpoint                          = "${var.cluster_endpoint}"
     region                            = "${data.aws_region.current.name}"
@@ -23,7 +23,7 @@ EOF
 
   count = "${length(var.kubeconfig_aws_authenticator_env_variables)}"
 
-  vars {
+  vars = {
     value = "${element(values(var.kubeconfig_aws_authenticator_env_variables), count.index)}"
     key   = "${element(keys(var.kubeconfig_aws_authenticator_env_variables), count.index)}"
   }
@@ -37,7 +37,7 @@ resource "local_file" "kubeconfig" {
 data "external" "aws_iam_authenticator" {
   program = ["bash", "${path.module}/authenticator.sh"]
 
-  query {
+  query = {
     profile      = "${var.aws_profile}"
     cluster_name = "${var.cluster_id}"
     role         = "${var.aws_authenticator_role_arn}"
