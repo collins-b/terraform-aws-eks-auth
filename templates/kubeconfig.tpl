@@ -24,5 +24,3 @@ users:
       command: ${aws_authenticator_command}
       args:
 ${aws_authenticator_command_args}
-${aws_authenticator_additional_args}
-${aws_authenticator_env_variables}
